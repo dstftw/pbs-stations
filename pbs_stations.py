@@ -34,7 +34,7 @@ def extract_stations():
                 continue
             common_name = station['common_name']
             mobj = re.search(
-                r'^(?:(?:https?:)?//)?(?:[^/]+\.)?([^/]+\.[^/]+)(?:/|$)', site_address)
+                r'^(?:(?:https?:)?//)?(?:[^/]+\.)?([^/]+\.[^/]+)(?:/|$)', site_address.lower())
             if not mobj:
                 print('WARNING! Unable to extract site address part for %s' % callsign)
             stations.append({
