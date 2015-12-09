@@ -13,7 +13,7 @@ _STATES = (
 
 def extract_stations():
     stations = []
-    stations_set = ()
+    stations_set = set()
     for state in _STATES:
         print('Downloading %s stations' % state)
         req = requests.get(
@@ -23,6 +23,7 @@ def extract_stations():
             if callsign in stations_set:
                 print('WARNING! %s already processed' % callsign)
                 continue
+            stations_set.add(callsign)
             print('Downloading %s station' % callsign)
             req = requests.get(
                 'http://jaws.pbs.org/localization/true/?callsign=%s' % callsign)
