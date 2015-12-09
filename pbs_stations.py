@@ -41,7 +41,6 @@ def extract_stations():
                 'name': common_name,
                 'site': site_address,
                 'part': mobj.group(1) if mobj else None,
-                'state': state,
             })
     return stations
 
@@ -51,8 +50,8 @@ def write_ytdl_tuple(stations):
         f.writelines('_STATIONS = (\n')
         for s in stations:
             f.writelines(
-                "    ('%s', '%s (%s)'),  # %s, %s\n"
-                % (s['part'], s['name'], s['callsign'], s['state'], s['site']))
+                "    ('%s', '%s (%s)'),  # %s\n"
+                % (s['part'], s['name'], s['callsign'], s['site']))
         f.writelines(')\n')
 
 
