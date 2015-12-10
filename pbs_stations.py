@@ -37,11 +37,26 @@ def extract_stations():
                 r'^(?:(?:https?:)?//)?(?:[^/]+\.)?([^/]+\.[^/]+)(?:/|$)', site_address.lower())
             if not mobj:
                 print('WARNING! Unable to extract site address part for %s' % callsign)
+                continue
+            suffix = mobj.group(1) if mobj else None
+            pattern = None
+            for p in ('video', 'videos', 'watch', 'vids', 'pbs', 'ondemand', 'on-demand'):
+                print('Downloading %s page' % p)
+                try:
+                    req = requests.get('http://%s.%s' % (p, suffix))
+                except requests.exceptions.ConnectionError:
+                    continue
+                if '>PBS VIDEO<' in req.text:
+                    print('Found video page - %s' % p)
+                    pattern = p
+                    break
+            if not pattern:
+                print('WARNING! Unable to find video URL pattern.')
             stations.append({
                 'callsign': callsign,
                 'name': common_name,
                 'site': site_address,
-                'part': mobj.group(1) if mobj else None,
+                'part': '%s.%s' % (pattern, suffix) if pattern else suffix,
             })
     return stations
 
